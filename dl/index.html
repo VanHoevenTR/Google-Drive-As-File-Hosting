@@ -1,0 +1,53 @@
+<?php
+if (!defined('IN_MEDIA')) exit("Not Declaration");
+include_once('header.php') ?>
+<?php include_once('navbar.php') ?>
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>{{welcome}}!</h1>
+                    <h2>{{site_title}}</h2>
+                    <p>{{site_introduce}}</p>
+                </div>
+                <div class="col-md-6">
+                    <iframe src="//www.facebook.com/plugins/likebox.php?href=<?=urlencode($site_config['fanpage'])?>&amp;width=600&amp;height=300&amp;colorscheme=light&amp;show_faces=true&amp;header=false&amp;stream=false&amp;show_border=false" width="100%" height="287" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h2>{{unlimited_storage_title}}</h2>
+                <p>{{unlimited_storage_text}}</p>
+                <p class="text-danger">{{max_file_upload}}</p>
+            </div>
+            <div class="col-md-4">
+                <h2>{{unlimited_bandwidth_title}}</h2>
+                <p>{{unlimited_bandwidth_text}}</p>
+                <p>{{unlimited_bandwidth_subtitle}}</p>
+            </div>
+            <div class="col-md-4" title="Not available" style="color: #e0d9d9;">
+                <h2 style="text-decoration: line-through;">{{pay_per_view_title}}</h2>
+                <p style="text-decoration: line-through;">{{pay_per_view_text}}</p>
+                <p style="text-decoration: line-through;">{{pay_per_view_subtitle}}</p>
+            </div>
+        </div>
+		<hr />
+		<?php include('footer.php'); ?>
+    </div>
+    <div id="loading-login" class="modal fade in" style="display: none; padding-right: 17px;">
+        <div class="modal-dialog modal-lg" style="width: 360px;">
+            <div class="modal-content">
+                <div class="modal-body" style='text-align:center'>
+                    <p>{{processing_wait}}</p>
+                    <img src="<?=$site_config['homepage']?>/imgs/gears.gif" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="<?=$site_config['homepage']?>/js/jquery.min.js"></script>
+    <script src="<?=$site_config['homepage']?>/js/bootstrap.min.js"></script>
+</body>
+</html>

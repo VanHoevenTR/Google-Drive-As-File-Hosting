@@ -1,0 +1,78 @@
+<?php
+if (!defined('IN_MEDIA')) exit("Not Declaration");
+if(preg_match("/viewdoc\/([^\/\?]+)(.+)?/",$_SERVER['REQUEST_URI'],$data)) {
+	//include_once 'inc/functions.php';
+	include_once 'inc/file.php';
+	$fileID = $data[1];
+	$file = new File();
+	$fileData = $file->checkFile($fileID);
+	if(!empty($fileData)) {
+		$file_lock = $fileData['file_password'] != '' ? true : false;
+		if(isset($_COOKIE[md5($fileData['file_id']).'/pass']) && ($_COOKIE[md5($fileData['file_id']).'/pass'] == md5($fileData['file_password']))) $file_lock = false;
+		if(isset($userData['user_id']) && $userData['user_id'] == $fileData['file_user']) $file_lock = 0;
+		$file_name = !$file_lock ? $fileData['file_name'] : 'Tệp tin đã khóa';
+		$file_size = !$file_lock ? formatBytes($fileData['file_size']) : '0 B';
+		
+		$file_embed = $site_config['homepage'].'/embed/'.$fileData['file_slug'];
+		$file_thumb = $fileData['file_thumb'];
+		
+		$file_url = ($fileData['file_url'] != '' && $fileData['file_status']) ? $fileData['file_url'] : $fileData['file_source'];
+	} else exit();
+} else exit();
+	//header("Location: ".$url);
+	echo '<html><head>
+		<title>'.$file_name.'</title>
+		<meta name="description" content="'.$site_config['site_description'].'" />
+		<meta property="og:site_name" content="'.$site_config['site_name'].'" />
+		<meta property="og:title" content="'.$file_name.'" />
+		<meta property="og:description" content="'.$site_config['site_description'].'" />
+		<meta property="og:url" content="'.$site_config['homepage'].'/image/'.$fileData['file_slug'].'" />
+		<meta property="og:image" content="'.$site_config['homepage'].'/thumb/'.$fileData['file_slug'].'"/>
+	</head><body style="margin:0;padding:0;"><center>';
+
+?>
+
+<?php
+require __DIR__ . '/phpfastcache-final/phpfastcache.php';
+//include_once 'inc/_functions.php';
+//include_once 'inc/functions.php';
+//$url = 'https://drive.google.com/file/d/0B4tT0CSKs3Fkbmo5em9DNWJocUI0M1RneFhyX3dBcXpIUmNB/view';
+//$url = 'https://drive.google.com/open?id=0B4tT0CSKs3FkanpPQ1ptVkhfNHc';
+//$url = 'https://drive.google.com/open?id=0B4tT0CSKs3FkVVhjZWdsY0JMaDA';
+//$url = 'https://drive.google.com/open?id=0B4tT0CSKs3FkVWE4ck1ZRHJtWk0';
+$key = 'viewdoc_'.$fileData['file_slug'];
+$CachedString = $InstanceCache->getItem($key);
+if (is_null($CachedString->get())) {
+	$curl = new cURL();
+	$html = $curl->get($file_url);
+	$html = unescapeUTF8EscapeSeq($html);
+	if(preg_match('/"(https?:\/\/([^\/]+)\/viewerng\/upload\?ds=([^"]+))"/',$html,$data)) {
+		$json_url = $data[1];
+		$html = $curl->get($json_url);
+		if(preg_match('/"img\?id=([^"]+)"/',$html,$data)) {
+			$img_id = $data[1];
+			preg_match('/"meta\?id=([^"]+)"/',$html,$meta);
+			$meta_url = 'https://drive.google.com/viewerng/meta?id='.$img_id;
+			$meta_html = $curl->get($meta_url);
+			if(preg_match('/"pages":(\d+)/',$meta_html,$pages)) $numpage = $pages[1]; else $numpage = 1;
+			$img_url = array();
+			$echo_html = null;
+			for($i=0;$i<$numpage;$i++) {
+				//$url_i = 'https://drive.google.com/viewerng/img?id='.$img_id.'&page='.$i.'&w=800';
+				$url_i = 'https://docs.google.com/viewerng/img?id='.$img_id.'&page='.$i.'&w=800';
+				$img_url[] = $url_i;
+				$echo_html .= '<img src="'.$url_i.'" alt="'.$file_name.' - page '. ($i+1) .'"/><br />'."\n";
+			}
+			//var_dump($img_url);
+			if($echo_html) {
+				$CachedString->set($echo_html)->expiresAfter(3600*3);
+				$InstanceCache->save($CachedString);
+			}
+		}
+		
+	}
+} else {
+	$echo_html = $CachedString->get();
+}
+echo $echo_html;
+echo '</center></body></html>';

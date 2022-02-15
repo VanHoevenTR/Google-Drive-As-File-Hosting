@@ -1,0 +1,1 @@
+a:4:{s:5:"value";s:228:"https://doc-0s-ak-docs.googleusercontent.com/docs/securesc/due2b9grejq5qdihuicj9ctub5hlrjq9/eqs094m99v6adqm6ph584k0hf15vhtqb/1498852800000/13529815332733513194/15953506549662877553/0B3DADEkBv-Y8VmFJd05mc2ZyWXM?e=download&gd=true";s:10:"write_time";s:10:"1498853680";s:10:"expired_in";i:604800;s:12:"expired_time";i:1499458480;}

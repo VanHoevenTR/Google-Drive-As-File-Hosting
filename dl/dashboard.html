@@ -1,0 +1,73 @@
+<?php
+if (!defined('IN_MEDIA')) exit("Not Declaration");
+
+$userData = getUserLogin(true);
+
+	$info = array();
+	$file = new QueryDB();
+	$file->Tbl = 'files';
+	$query = "SELECT * FROM ".$file->Tbl." WHERE file_user = '".$userData['user_id']."' ORDER BY file_name ASC";
+	$result = $file->db->query($query);
+	$user_numfile = $result->num_rows;
+	$info[] = $user_numfile;
+	
+	$query = "SELECT SUM(file_size) AS total_size FROM ".$file->Tbl." WHERE file_user = '".$userData['user_id']."'";
+	$result = $file->db->query($query);
+	$user_totalsize = mysqli_fetch_assoc($result)['total_size'];
+	$info[] = $user_totalsize;
+
+include_once('header.php') ?>
+    <?php include_once('navbar.php') ?>
+    <div class="container">
+        <div id="dashboard">
+            <h1 class="page-header"><i class="fa fa-tachometer"></i> Dashboard</h1>
+            <div class="alert alert-success" role="alert">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> {{tip_process_video}}
+            </div>
+            <div class='col-sm-12'>
+                <div class='col-sm-4'>
+                    <div class='panel panel-default'>
+                        <div class='panel-body'>
+                            <i class='fa fa-file fa-3x' style='float:left; margin-right:10px'></i>
+<a href="<?=$site_config['homepage']?>/dashboard/manager"> <strong>{{total_file_upload}}</strong></a>                           						   
+                            <p><?=$user_numfile?></p>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-4'>
+                    <div class='panel panel-default'>
+                        <div class='panel-body'>
+                            <i class='fa fa-database fa-3x' style='float:left; margin-right:10px'></i>
+                            <strong>{{total_file_size}}</strong>
+                            <p><?=formatBytes($user_totalsize)?></p>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-sm-4'>
+                    <div class='panel panel-default'>
+                        <div class='panel-body'>
+                            <i class='fa fa-circle-o fa-3x' style='float:left; margin-right:10px'></i>
+                            <strong>{{balance}}</strong>
+                            <p>$0.00000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class='loading' style='display: none;'></div>
+        <div class='alert alert-success msg-success' role='alert' style='display: none;'><strong>{{success}}! </strong><span></span></div>
+        <div class='alert alert-danger msg-danger' role='alert' style='display: none;'><strong>{{error}}! </strong><span></span></div>
+        <script>
+            $(document).ready(function() {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+        <div class="clearfix"></div>
+        <hr/>
+        <?php include('footer.php'); ?>
+    </div>
+    <script src="<?=$site_config['homepage']?>/js/all.js?v=<?=filemtime('js/all.js')?>"></script>
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<?php
+if (!defined('IN_MEDIA')) exit("Not Declaration");
+if(preg_match("/(?:thumb|image)\/([^\/\?]+)(.+)?/",$_SERVER['REQUEST_URI'],$data)) {
+	if(isset($data[2]) && preg_match("/(\d+)/",$data[2],$width)) $width = (int)$width[1];
+	else $width = 480;
+	$resize = '&resize_w='.$width;
+	include_once 'inc/functions.php';
+	include_once 'inc/file.php';
+	$fileID = $data[1];
+	$file = new File();
+	$fileData = $file->checkFile($fileID);
+	//$fileDriveID = getDriveId($fileData['file_url']);
+	$file_lock = $fileData['file_password'] != '' ? true : false;
+	if(isset($_COOKIE[md5($fileData['file_id']).'/pass']) && ($_COOKIE[md5($fileData['file_id']).'/pass'] == md5($fileData['file_password']))) $file_lock = false;
+	
+	$file_name = !$file_lock ? $fileData['file_name'] : 'Tệp tin đã khóa';
+	$file_size = !$file_lock ? formatBytes($fileData['file_size']) : '0 B';
+	
+	$file_url = $fileData['file_status'] ? $fileData['file_url'] : ($fileData['file_source'] ? $fileData['file_source'] : $fileData['file_url']);
+
+	if(preg_match('/(video|image|photo)/i',$fileData['file_mime'])) {
+		$file_thumb = get_redirect('https://drive.google.com/thumbnail?authuser=0&sz=w480&id='.getDriveId($file_url));
+	$file_thumb = 'https://images2-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&gadget=a&no_expand=1&resize_w='.$width.'&refresh=604800&url='.$file_thumb;
+	} else {
+		$curl = new cURL();
+		$curl->ref($file_url);
+		$html = $curl->get($file_url);
+		$html = unescapeUTF8EscapeSeq($html);
+		$curl->close();
+		if(preg_match('/meta property="og:image" content="([^\"]+)"/ms',$html,$data)) {
+			$file_thumb = $data[1];
+			$file_thumb = 'https://images2-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&gadget=a&no_expand=1'.$resize.'&refresh=604800&url='.$file_thumb;
+		} else $file_thumb = $site_config['homepage'].'/imgs/ajax-loader.gif';
+	}
+	 header("Location: ".$file_thumb);
+}
+?>

@@ -1,0 +1,50 @@
+<?php
+if (!defined('IN_MEDIA')) exit("Not Declaration");
+if(preg_match("/(?:thumb|image)\/([^\/\?]+)(.+)?/",$_SERVER['REQUEST_URI'],$data)) {
+	if(isset($data[2]) && preg_match("/(\d+)/",$data[2],$width)) $width = (int)$width[1];
+	else $width = 800;
+	$resize = '&resize_w='.$width;
+	include_once 'inc/file.php';
+	$fileID = $data[1];
+	$file = new File();
+	$fileData = $file->checkFile($fileID);
+	
+	$file_lock = $fileData['file_password'] != '' ? true : false;
+	if(isset($_COOKIE[md5($fileData['file_id']).'/pass']) && ($_COOKIE[md5($fileData['file_id']).'/pass'] == md5($fileData['file_password']))) $file_lock = false;
+	
+	if(isset($userData['user_id']) && $userData['user_id'] == $fileData['file_user']) $file_lock = 0;
+	$file_name = !$file_lock ? $fileData['file_name'] : 'Tệp tin đã khóa';
+	$file_size = !$file_lock ? formatBytes($fileData['file_size']) : '0 B';
+	
+	$file_embed = $site_config['homepage'].'/embed/'.$fileData['file_slug'];
+	$file_thumb = $fileData['file_thumb'];
+	
+	$file_url = $fileData['file_status'] ? $fileData['file_url'] : ($fileData['file_source'] ? $fileData['file_source'] : $fileData['file_url']);
+	
+	if(preg_match('/(video|image|photo)/i',$fileData['file_mime'])) {
+		$file_thumb = get_redirect('https://drive.google.com/thumbnail?authuser=0&sz=w480&id='.getDriveId($file_url));
+		$file_thumb = 'https://images2-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&gadget=a&no_expand=1&refresh=604800&url='.$file_thumb;
+	} else {
+		$curl = new cURL();
+		$curl->ref($file_url);
+		$html = $curl->get($file_url);
+		$html = unescapeUTF8EscapeSeq($html);
+		$curl->close();
+		if(preg_match('/meta property="og:image" content="([^\"]+)"/ms',$html,$data)) {
+			$file_thumb = $data[1];
+			$file_thumb = 'https://images2-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&gadget=a&no_expand=1&refresh=604800&url='.$file_thumb;
+		} else $file_thumb = $site_config['homepage'].'/imgs/ajax-loader.gif';
+	}
+	
+	//header("Location: ".$url);
+	echo '<html><head>
+		<title>'.$file_name.'</title>
+		<meta name="description" content="'.$site_config['site_description'].'" />
+		<meta property="og:site_name" content="'.$site_config['site_name'].'" />
+		<meta property="og:title" content="'.$file_name.'" />
+		<meta property="og:description" content="'.$site_config['site_description'].'" />
+		<meta property="og:url" content="'.$site_config['homepage'].'/image/'.$fileData['file_slug'].'" />
+		<meta property="og:image" content="'.$file_thumb.'"/>
+	</head><body style="margin:0;padding:0;"><center><img src="'.$file_thumb.'" alt="'.$file_name.'"/></center></body></html>';
+}
+?>

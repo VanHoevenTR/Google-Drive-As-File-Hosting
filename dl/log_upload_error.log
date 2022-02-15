@@ -1,0 +1,101 @@
+2017-04-09 14:59:44 : onContentUploadError : 
+
+
+2017-04-16 14:07:22 : onContentUploadError : 
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+<title> 403 Forbidden</title>
+</head>
+<body style="color: #444; margin:0;font: normal 14px/20px Arial, Helvetica, sans-serif; height:100%; background-color: #fff;">
+<div style="height:auto; min-height:100%; ">
+<div style="text-align: center; width:800px; margin-left: -400px; position:absolute; top: 30%; left:50%;">
+<h1 style="margin:0; font-size:150px; line-height:150px; font-weight:bold;">403</h1>
+<h2 style="margin-top:20px;font-size: 30px;">Forbidden</h2>
+<p>You don't have permission!</p>
+</div>
+</div>
+</body>
+</html>
+
+2017-04-16 14:08:18 : onContentUploadError : 
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+<title> 403 Forbidden</title>
+</head>
+<body style="color: #444; margin:0;font: normal 14px/20px Arial, Helvetica, sans-serif; height:100%; background-color: #fff;">
+<div style="height:auto; min-height:100%; ">
+<div style="text-align: center; width:800px; margin-left: -400px; position:absolute; top: 30%; left:50%;">
+<h1 style="margin:0; font-size:150px; line-height:150px; font-weight:bold;">403</h1>
+<h2 style="margin-top:20px;font-size: 30px;">Forbidden</h2>
+<p>You don't have permission!</p>
+</div>
+</div>
+</body>
+</html>
+
+2017-04-16 14:09:16 : onContentUploadError : 
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+<title> 403 Forbidden</title>
+</head>
+<body style="color: #444; margin:0;font: normal 14px/20px Arial, Helvetica, sans-serif; height:100%; background-color: #fff;">
+<div style="height:auto; min-height:100%; ">
+<div style="text-align: center; width:800px; margin-left: -400px; position:absolute; top: 30%; left:50%;">
+<h1 style="margin:0; font-size:150px; line-height:150px; font-weight:bold;">403</h1>
+<h2 style="margin-top:20px;font-size: 30px;">Forbidden</h2>
+<p>You don't have permission!</p>
+</div>
+</div>
+</body>
+</html>
+
+2017-04-16 14:09:33 : onContentUploadError : 
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+<title> 403 Forbidden</title>
+</head>
+<body style="color: #444; margin:0;font: normal 14px/20px Arial, Helvetica, sans-serif; height:100%; background-color: #fff;">
+<div style="height:auto; min-height:100%; ">
+<div style="text-align: center; width:800px; margin-left: -400px; position:absolute; top: 30%; left:50%;">
+<h1 style="margin:0; font-size:150px; line-height:150px; font-weight:bold;">403</h1>
+<h2 style="margin-top:20px;font-size: 30px;">Forbidden</h2>
+<p>You don't have permission!</p>
+</div>
+</div>
+</body>
+</html>
+
+2017-04-21 03:13:13 : onContentUploadError : 
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>405 Method Not Allowed</title>
+</head><body>
+<h1>Method Not Allowed</h1>
+<p>The requested method PUT is not allowed for the URL /null.</p>
+</body></html>
+
+
+2017-06-28 18:31:54 : onContentUploadError : 
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>405 Method Not Allowed</title>
+</head><body>
+<h1>Method Not Allowed</h1>
+<p>The requested method PUT is not allowed for the URL /null.</p>
+</body></html>
+
+
+2017-06-28 18:33:24 : onContentUploadError : 
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>405 Method Not Allowed</title>
+</head><body>
+<h1>Method Not Allowed</h1>
+<p>The requested method PUT is not allowed for the URL /null.</p>
+</body></html>
+
+

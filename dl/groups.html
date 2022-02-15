@@ -1,0 +1,118 @@
+<?php 
+include_once 'inc/functions.php';
+/*
+// type=group_search&keyword=sdf
+// {"status":0,"msg":"Không tìm thấy Group phù hợp"}
+
+type=group_create&group_name=mygroupkhoa&group_sub=fdgdfgfd
+{"status":1,"group_lists":"<tr id='group-83'><td class='col-md-6'>JAVFREE<\/td><td class='col-md-1 text-center'>139<\/td><td class='col-md-2 text-center'>2016-11-15 04:22:04<\/td><td class='col-md-13 text-center group-status-83'><span data-toggle='tooltip' data-placement='top' title='C\u00f4ng khai' class='glyphicon glyphicon-eye-open group-status-83' style='color: green;'><\/span><\/td><td class='col-md-2 text-center'><a href='\/group\/jav' target='_blank' class='btn btn-primary btn-xs' data-toggle='tooltip' data-placement='top' title='T\u1edbi Group'><span class='fa fa-users'><\/span><\/a><a href='\/group\/jav\/outgroup' target='_blank' class='btn btn-danger btn-xs' data-toggle='tooltip' data-placement='top' title='R\u1eddi kh\u1ecfi Group'><span class='glyphicon glyphicon-log-out'><\/span><\/a><span data-toggle='tooltip' data-placement='top' title='Ch\u1edd duy\u1ec7t' class='btn btn-warning btn-xs'><span class='glyphicon glyphicon-time'><\/span><\/span> <\/td><\/tr><tr id='group-177'><td class='col-md-6'>mygroupkhoa<\/td><td class='col-md-1 text-center'>1<\/td><td class='col-md-2 text-center'>2017-01-07 10:38:10<\/td><td class='col-md-13 text-center group-status-177'><span data-toggle='tooltip' data-placement='top' title='C\u00f4ng khai' class='glyphicon glyphicon-eye-open group-status-177' style='color: green;'><\/span><\/td><td class='col-md-2 text-center'><a href='\/group\/fdgdfgfd' target='_blank' class='btn btn-primary btn-xs' data-toggle='tooltip' data-placement='top' title='T\u1edbi Group'><span class='fa fa-users'><\/span><\/a><button class='btn btn-warning btn-xs group-block-177' data-toggle='tooltip' data-placement='top' title='Ri\u00eang t\u01b0' onclick='group_status(177, 0)'><span class='glyphicon glyphicon-eye-close'><\/span><\/button><button class='btn btn-success btn-xs group-action-177' data-toggle='tooltip' data-placement='top' title='C\u00f4ng Khai' style='display:none' onclick='group_status(177, 1)'><span class='glyphicon glyphicon-eye-open'><\/span><\/button><button class='btn btn-danger btn-xs' data-toggle='tooltip' data-placement='top' title='X\u00f3a group' onclick='group_delete(177)'><span class='glyphicon glyphicon-trash'><\/span><\/button><\/td><\/tr>","msg":"Tạo Group thành công"}
+
+http://onecloud.media/dashboard/groups/177   status=0
+http://localhost/onecloud.media/dashboard/groups   type=group_status&id=177&status=0
+{"status":1,"group_lists":"<tr id='group-83'><td class='col-md-6'>JAVFREE<\/td><td class='col-md-1 text-center'>139<\/td><td class='col-md-2 text-center'>2016-11-15 04:22:04<\/td><td class='col-md-13 text-center group-status-83'><span data-toggle='tooltip' data-placement='top' title='C\u00f4ng khai' class='glyphicon glyphicon-eye-open group-status-83' style='color: green;'><\/span><\/td><td class='col-md-2 text-center'><a href='\/group\/jav' target='_blank' class='btn btn-primary btn-xs' data-toggle='tooltip' data-placement='top' title='T\u1edbi Group'><span class='fa fa-users'><\/span><\/a><a href='\/group\/jav\/outgroup' target='_blank' class='btn btn-danger btn-xs' data-toggle='tooltip' data-placement='top' title='R\u1eddi kh\u1ecfi Group'><span class='glyphicon glyphicon-log-out'><\/span><\/a><span data-toggle='tooltip' data-placement='top' title='Ch\u1edd duy\u1ec7t' class='btn btn-warning btn-xs'><span class='glyphicon glyphicon-time'><\/span><\/span> <\/td><\/tr><tr id='group-177'><td class='col-md-6'>mygroupkhoa<\/td><td class='col-md-1 text-center'>1<\/td><td class='col-md-2 text-center'>2017-01-07 10:38:10<\/td><td class='col-md-13 text-center group-status-177'><span data-toggle='tooltip' data-placement='top' title='Ri\u00eang t\u01b0' class='glyphicon glyphicon-eye-close group-status-177'><\/span><\/td><td class='col-md-2 text-center'><a href='\/group\/fdgdfgfd' target='_blank' class='btn btn-primary btn-xs' data-toggle='tooltip' data-placement='top' title='T\u1edbi Group'><span class='fa fa-users'><\/span><\/a><button class='btn btn-warning btn-xs group-block-177' data-toggle='tooltip' data-placement='top' title='Ri\u00eang t\u01b0' style='display:none' onclick='group_status(177, 0)'><span class='glyphicon glyphicon-eye-close'><\/span><\/button><button class='btn btn-success btn-xs group-action-177' data-toggle='tooltip' data-placement='top' title='C\u00f4ng khai' onclick='group_status(177, 1)'><span class='glyphicon glyphicon-eye-open'><\/span><\/button><button class='btn btn-danger btn-xs' data-toggle='tooltip' data-placement='top' title='X\u00f3a group' onclick='group_delete(177)'><span class='glyphicon glyphicon-trash'><\/span><\/button><\/td><\/tr>","msg":"Cập nhật Status thành công"}
+
+type=group_create&group_name=JAVFREE&group_sub=jav
+{"status":0,"msg":"Url Group đã có người tạo"}
+
+
+*/
+?>
+<?php include_once('header.php') ?>
+    <?php include_once('navbar.php') ?>
+    <div class="container">
+        <div id="groups">
+            <h1 class="page-header"><span class="fa fa-users"></span> Quản lý Groups</h1>
+            <div class="row">
+                <div class="btn-group col-sm-7">
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><span class="fa fa-users"></span></span>
+                        <span class="input-group-btn group_name" style="width:25%">
+<input data-toggle='tooltip' data-placement='top' title='Tối thiểu 3 ký tự' type="text" class="form-control" style="height:38px" id="group_name" placeholder="Tên Group"/>
+</span>
+                        <span class="input-group-btn group_sub" style="width:50%">
+<input data-toggle='tooltip' data-placement='top' title='Từ 3 -> 11 ký tự' type="text" class="form-control" style="height:38px" id="group_sub" placeholder="<?=$site_config['homepage']?>/group/{ URL Group }"/>
+</span>
+                        <span class="input-group-btn">
+<button class="btn btn-primary group-create" style="height:38px;" onclick="group_create()">
+Create Group <span class="glyphicon glyphicon-plus-sign"></span>
+                        </button>
+                        <button class="btn btn-primary group-edit-update" style="height:38px;display:none" onclick="group_edit_update()">
+Update <span class="glyphicon glyphicon-cloud-upload"></span>
+</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4" style="float:right">
+
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                        <input data-toggle='tooltip' data-placement='top' title='Tối thiểu 3 ký tự' type="text" class="form-control" style="height:38px;z-index:0" id="group_keyword" placeholder="Nhập tên group cần tìm..." />
+                        <span class="input-group-btn">
+<button class="btn btn-primary" style="height:38px;z-index:0" onclick="group_search()">
+<span id="text_link">Tìm kiếm</span>
+                        </button>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="panel panel-default">
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th class="col-md-6">Name</th>
+									<th class="col-md-1 text-center">Member</th>
+									<th class="col-md-2 text-center">Date</th>
+									<th class="col-md-13 text-center">Status</th>
+									<th class="col-md-2 text-center">Option</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr></tr>
+								<tr id='group-83'>
+									<td class='col-md-6'>JAVFREE</td>
+									<td class='col-md-1 text-center'>139</td>
+									<td class='col-md-2 text-center'>2016-11-15 04:22:04</td>
+									<td class='col-md-13 text-center group-status-83'><span data-toggle='tooltip' data-placement='top' title='Công khai' class='glyphicon glyphicon-eye-open group-status-83' style='color: green;'></span></td>
+									<td class='col-md-2 text-center'><a href='/group/jav' target='_blank' class='btn btn-primary btn-xs' data-toggle='tooltip' data-placement='top' title='Tới Group'><span class='fa fa-users'></span></a><a href='/group/jav/outgroup' target='_blank' class='btn btn-danger btn-xs' data-toggle='tooltip' data-placement='top' title='Rời khỏi Group'><span class='glyphicon glyphicon-log-out'></span></a><span data-toggle='tooltip' data-placement='top' title='Chờ duyệt' class='btn btn-warning btn-xs'><span class='glyphicon glyphicon-time'></span></span>
+									</td>
+								</tr>
+								<tr id='group-177'>
+									<td class='col-md-6'>mygroupkhoa</td>
+									<td class='col-md-1 text-center'>1</td>
+									<td class='col-md-2 text-center'>2017-01-07 10:38:10</td>
+									<td class='col-md-13 text-center group-status-177'><span data-toggle='tooltip' data-placement='top' title='Riêng tư' class='glyphicon glyphicon-eye-close group-status-177'></span></td>
+									<td class='col-md-2 text-center'><a href='/group/fdgdfgfd' target='_blank' class='btn btn-primary btn-xs' data-toggle='tooltip' data-placement='top' title='Tới Group'><span class='fa fa-users'></span></a><button class='btn btn-warning btn-xs group-block-177' data-toggle='tooltip' data-placement='top' title='Riêng tư' style='display:none' onclick='group_status(177, 0)'><span class='glyphicon glyphicon-eye-close'></span></button><button class='btn btn-success btn-xs group-action-177' data-toggle='tooltip' data-placement='top' title='Công khai' onclick='group_status(177, 1)'><span class='glyphicon glyphicon-eye-open'></span></button><button class='btn btn-danger btn-xs' data-toggle='tooltip' data-placement='top' title='Xóa group' onclick='group_delete(177)'><span class='glyphicon glyphicon-trash'></span></button></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+                <div class="panel-footer manager">
+                    <nav style="text-align: right;">
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class='loading' style='display: none;'></div>
+        <div class='alert alert-success msg-success' role='alert' style='display: none;'><strong>Success! </strong><span></span></div>
+        <div class='alert alert-danger msg-danger' role='alert' style='display: none;'><strong>Error! </strong><span></span></div>
+        <script>
+            $(document).ready(function() {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+        <div class="clearfix"></div>
+        <hr/>
+        <footer>
+            <p>&copy; 2016 <?=$site_config['name']?>. Contact: <?=$site_config['email']?></p>
+        </footer>
+    </div>
+    <script src="../js/all.js?v=<?=filemtime('js/all.js')?>"></script>
+</body>
+
+</html>

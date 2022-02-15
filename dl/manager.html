@@ -1,0 +1,355 @@
+<?php
+if (!defined('IN_MEDIA')) exit("Not Declaration");
+$userData = getUserLogin(true);
+include_once 'inc/folder.php';
+include_once 'inc/UUID.php';
+if(preg_match("/dashboard\/manager\/([^\/\?]+)/",$_SERVER['REQUEST_URI'],$data)) {
+	if(UUID::is_valid($data[1])) {
+		$folder = new Folder();
+		$folderData = $folder->checkFolder($data[1]);
+		$folderID = $folderData['folder_id'];
+		$site_config['title'] = $folderData['folder_name'];
+	} else $folderID = 0;
+} else $folderID = 0;
+
+?>
+<?php include_once('header.php') ?>
+<?php include_once('navbar.php') ?>
+    <div class="container">
+        <div id="manager">
+            <h1 class="page-header"><span class="glyphicon glyphicon-folder-open"></span> {{file_manager}}</h1>
+            <link rel="stylesheet" href='<?=$site_config['homepage']?>/css/jquery.treegrid.css'>
+            <script type="text/javascript" src='<?=$site_config['homepage']?>/js/jquery.treegrid.min.js'></script>
+            <script type="text/javascript" src='<?=$site_config['homepage']?>/js/jquery.cookie.js'></script>
+            <script type="text/javascript" src='<?=$site_config['homepage']?>/js/lazy.js'></script>
+            <script type="text/javascript">
+                $.extend($.fn.treegrid.defaults, {
+                    expanderExpandedClass: 'glyphicon glyphicon-chevron-down',
+                    expanderCollapsedClass: 'glyphicon glyphicon-chevron-right'
+                });
+                $(document).ready(function() {
+                    $('.tree').treegrid({
+                        'initialState': 'collapsed',
+                        'saveState': true,
+                    });
+                });
+            </script>
+            <div class="row">
+                <div class="btn-group col-sm-6">
+
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-folder-close"></span></span>
+                        <input data-toggle="tooltip" data-placement="top" title="{{minimum_chars}}" type="text" class="form-control" style="height:38px;z-index:0" id="folder_name" placeholder="{{name_folder_placeholder}}" />
+                        <span class="input-group-btn">
+<button class="btn btn-primary folder_create" style="height:38px;z-index:0" onclick="folder_create()">
+<span id="text_link"><span class="glyphicon glyphicon-plus-sign"></span> {{create_folder}}</span>
+                        </button>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-sm-4" style="float:right">
+
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                        <input data-toggle="tooltip" data-placement="top" title="{{minimum_chars}}" type="text" class="form-control" style="height:38px;z-index:0" id="folder_keyword" placeholder="{{keyword_placeholder}}" />
+                        <span class="input-group-btn">
+<button class="btn btn-primary" style="height:38px;z-index:0" onclick="folder_search()">
+<span id="text_link"><span class="glyphicon glyphicon-folder-open"></span> {{search}}</span>
+                        </button>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped tree">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-5"><span>{{name}}</span></th>
+                                    <th class="col-md-1 text-center">{{size}}</th>
+                                    <th class="col-md-1 text-center">{{date}}</th>
+                                    <th class="col-md-13 text-center">{{status}}</th>
+                                    <th class="col-md-1 text-center"><span class="fa fa-cogs"></span></th>
+                                    <th class="col-md-13"><input data-toggle='tooltip' data-placement='top' title='{{root_folder}}' type='radio' name='folder' value='0' checked></th>
+                                </tr>
+                            </thead>
+                            <tbody class="folder_response">
+							<tr></tr>
+							<?php 
+								$folder = new QueryDB();
+								$folder->Tbl = 'folders';
+								$prevQuery = "SELECT * FROM folders WHERE folder_user = '".$userData['user_id']."' AND folder_parent = '".$folderID."' ORDER BY CASE WHEN `folder_parent` = 0 THEN `folder_id` ELSE `folder_parent` END, `folder_parent`, `folder_id`";
+								$result = $folder->db->query($prevQuery);
+								if($result->num_rows > 0) {
+									$i = 1;$limit = 0;
+									$folder_id_parent = null;
+									while ($row = mysqli_fetch_assoc($result)) {
+										if(!isset($info_parent)) {
+											$info_parent[$row['folder_id']] = 1;
+										} elseif($row['folder_parent']==0) {
+											$info_parent[$row['folder_id']] = $i;
+										}
+										if($row['folder_password'] != '') {
+											$type_private_title = '{{folder_lock}}';
+											$type_private_class = 'glyphicon-lock';
+											$type_private_style = '';
+										} else {
+											$type_private_title = '{{public}}';
+											$type_private_class = 'glyphicon-ok-circle';
+											$type_private_style = ' style="color:green"';
+										}
+										
+										if(isset($info_parent[$row['folder_parent']])) {
+											$class_parent = ' treegrid-parent-'.$info_parent[$row['folder_parent']];
+										} else {
+											$class_parent = '';
+											$limit++;
+										}
+									?>
+										<tr id='folder-<?=$row['folder_id']?>' class='treegrid-<?=$i?><?=$class_parent?>'>
+											<td class='col-md-5 middle folder-title-6119'><a href='<?=$site_config['homepage']?>/dashboard/manager/<?=$row['folder_slug']?>'> <?=$row['folder_name']?></a></td>
+											<td class='col-md-1 text-center middle'>--</td>
+											<td class='col-md-1 text-center middle'><?=$row['folder_created']?></td>
+											<td class='col-md-13 text-center middle folder-status-6119'><span data-toggle='tooltip' data-placement='top' title='<?=$type_private_title?>' class='glyphicon <?=$type_private_class?>'<?=$type_private_style?>></span></td>
+											<td class='col-md-1 text-center middle'>
+												<button class='btn btn-success btn-xs' data-toggle='modal' data-target='#myModal' onclick='folder_info(<?=$row['folder_id']?>)'>
+												<span class='glyphicon glyphicon-info-sign'></span></button>
+												<button class='btn btn-danger btn-xs' data-toggle='tooltip' data-placement='top' title='{{delete_folder}}' onclick='folder_delete(<?=$row['folder_id']?>)'>
+												<span class='glyphicon glyphicon-trash'></span></button>
+											</td>
+											<td class='col-md-13 middle'><input type='radio' name='folder' value='<?=$row['folder_id']?>'></td>
+										</tr>
+									<?php 
+										$i++;
+									}
+								}
+								?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-footer folder">
+                    <div id="folder_load">{{load_more_folder}}</div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="btn-group manager_options" style="display: none">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							{{options}} <span class="caret"></span>
+						</button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" onclick="folder_move()"><span class="glyphicon glyphicon-transfer"></span> {{move_files}}</a></li>
+                            <li><a href="#" onclick="manager_delete_choose()"><span class="glyphicon glyphicon-trash"></span> {{delete_files}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-4" style="float:right">
+
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                        <input data-toggle='tooltip' data-placement='top' title='{{minimum_chars}}' type="text" class="form-control" style="height:38px;z-index:0" id="manager_keyword" placeholder="{{keyword_placeholder}}" />
+                        <span class="input-group-btn">
+						<button type="submit" class="btn btn-primary" style="height:38px;z-index:0" onclick="manager_search()">
+							<span id="text_link"><span class="glyphicon glyphicon-file"></span> {{search}}</span>
+                        </button>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-13"><input type="checkbox" onclick="manager_checked(this);" /></th>
+                                    <th class="col-md-13 text-center">{{thumb}}</th>
+                                    <th class="col-md-4">{{name}}</th>
+                                    <th class="col-md-1 text-center">{{size}}</th>
+                                    <th class="col-md-1 text-center">{{date}}</th>
+                                    <th class="col-md-13 text-center">{{status}}</th>
+                                    <th class="col-md-13 text-center"><span class="glyphicon glyphicon-save"></span></th>
+                                    <th class="col-md-13 text-center"><span class="glyphicon glyphicon-eye-open"></span></th>
+                                    <th class="col-md-13 text-center"><span class="fa fa-cogs"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody class="manager_response">
+                                <tr></tr>
+								<?php 
+								$file = new QueryDB();
+								$file->Tbl = 'files';
+								$prevQuery = "SELECT * FROM ".$file->Tbl." WHERE file_user = '".$userData['user_id']."' AND file_folder = '".$folderID."' ORDER BY file_created DESC";//file_name ASC LIMIT 0,10";
+								$result = $file->db->query($prevQuery);
+								if($result->num_rows > 0) {
+									while ($row = mysqli_fetch_assoc($result)) {
+										$disabled = '';
+										if($row['file_password'] != '') {
+											$type_private_title = '{{file_lock}}';
+											$type_private_class = 'glyphicon-lock';
+											$type_private_style = '';
+										} else {
+											$type_private_title = '{{public}}';
+											$type_private_class = 'glyphicon-ok-circle';
+											$type_private_style = ' style="color:green"';
+										}
+										if(preg_match("/video/i",$row['file_mime'])) {
+											$type_file_title = '{{watch_online}}';
+											$type_file_url = $site_config['homepage'].'/embed/'.$row['file_slug'];
+											$type_file_class = 'glyphicon-facetime-video';
+											$type_file_btn = 'btn-primary';
+										} elseif(preg_match("/images?/i",$row['file_mime'])) {
+											$type_file_title = '{{view_image}}';
+											$type_file_url = $site_config['homepage'].'/image/'.$row['file_slug'];
+											$type_file_class = 'glyphicon-eye-open';
+											$type_file_btn = 'btn-success';
+										} elseif(preg_match("/(pdf|word|excel|sheet|text|presentation|document|powerpoint)/i",$row['file_mime'])) {
+											$type_file_title = '{{view_document}}';
+											$type_file_url = $site_config['homepage'].'/viewdoc/'.$row['file_slug'];
+											$type_file_class = 'glyphicon-eye-open';
+											$type_file_btn = 'btn-default';
+										} else {
+											$type_file_title = '{{cannot_view}}';
+											$type_file_url = $site_config['homepage'].'/file/'.$row['file_slug'];
+											$type_file_class = 'glyphicon glyphicon-eye-close';
+											$type_file_btn = 'btn-default';
+											$disabled = ' disabled';
+										}
+										
+										if(!$row['file_status'] && preg_match('/(video)/i',$row['file_mime'])) {
+											$type_private_class = 'glyphicon-time';
+											$type_private_title = '{{processing}} ({{update_at}} '.$row['file_update'].')';
+											$type_private_style = ' style="color:orange"';
+											if($row['file_source'] == '') {
+												$type_file_btn = 'btn-default';
+												$disabled = ' disabled';
+											}
+										} elseif($row['file_status'] != 0 && $row['file_status'] != 1) {
+											$type_private_class = 'glyphicon-exclamation-sign';
+											$type_private_title = '{{file_error}} ({{license_violation}})';
+											$type_private_style = ' style="color:red"';
+											if($row['file_source'] == '') {
+												$type_file_btn = 'btn-default';
+												$disabled = ' disabled';
+											}
+										}
+
+										echo '<tr id="manager-'.$row['file_id'].'">
+											<td class="col-md-13 middle"><input type="checkbox" name="listItems" value="'.$row['file_id'].'"></td>
+											<td class="col-md-13 middle text-center">
+												'.(preg_match('/(video|image|photo)/i',$row['file_mime']) ? '<img class="thumb lazy" data-toggle="modal" data-target="#myPreview" src="'.$site_config['homepage'].'/imgs/ajax-loader.gif" data-src="'.$site_config['homepage'].'/thumb/'.$row['file_slug'].'?s=480" width="50" style="max-height: 50px; max-width: 50px;">' : '<span class="fa fa-file-o fa-2x"></span>').'
+											</td>
+											<td class="col-md-5 middle manager-title-'.$row['file_id'].'"><a href="#" data-toggle="modal" data-target="#myModal" onclick="manager_info('.$row['file_id'].')">'.$row['file_name'].'</a></td>
+											<td class="col-md-1 text-center middle">'.formatBytes($row['file_size']).'</td>
+											<td class="col-md-1 text-center middle">'.$row['file_created'].'</td>
+											<td class="col-md-13 text-center middle manager-status-'.$row['file_id'].'">
+												<span data-toggle="tooltip" data-placement="top" title="'.$type_private_title.'" class="glyphicon '.$type_private_class.'"'.$type_private_style.'></span>
+											</td>
+											<td class="col-md-13 text-center middle">
+												<a href="'.$site_config['homepage'].'/file/'.$row['file_slug'].'" data-toggle="tooltip" data-placement="top" title="{{download}}" target="_blank" class="btn btn-warning btn-xs">
+													<span class="glyphicon glyphicon-save"></span>
+												</a>
+											</td>
+											<td class="col-md-13 text-center middle">
+												<a href="'.$type_file_url.'" data-toggle="tooltip" data-placement="top" title="'.$type_file_title.'" target="_blank" class="btn '.$type_file_btn.' btn-xs"'.$disabled.'>
+													<span class="glyphicon '.$type_file_class.'"></span>
+												</a>
+											</td>
+											<td class="col-md-13 text-center middle">
+												<button class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="{{delete_file}}" onclick="manager_delete('.$row['file_id'].')">
+													<span class="glyphicon glyphicon-trash"></span>
+												</button>
+											</td>
+										</tr>';
+									}
+								}
+								?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-footer manager">
+                    <div id='manager_search_load' style="display:none">{{load_more_file}}</div>
+                    <nav style="text-align: right;">
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myPreview" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body preview">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog" style="width: 100%;max-width: 960px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><span class="glyphicon glyphicon-bookmark"></span> <span id="manager_info_title"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="hidden" id="manager_info_id" value="">
+                                <div class='form-group'>
+                                    <label><span class='glyphicon glyphicon-bookmark'></span> {{name}}:</label>
+                                    <input type="text" id="manager_info_name" class='form-control' placeholder="{{name_file}}">
+                                </div>
+                                <div class='form-group'>
+                                    <label><span class='glyphicon glyphicon-lock'></span> {{password}}:</label>
+                                    <input type="password" id='manager_info_password' class='form-control' placeholder="{{set_password}}">
+                                </div>
+                                <div class='form-group manager_info_subscene' style="display:none">
+                                    <label><span class='fa fa-cc'></span> {{subscene}}:</label>
+                                    <input type="url" id='manager_info_subscene' class='form-control' placeholder="{{subtitle_film}} (eg: http://demo.com/phu-de.srt)">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="linkShare"><span class="glyphicon glyphicon-link"></span> {{link_share}}:</label>
+                                    <input onclick="copyToClipboard(this);this.focus();this.select()" data-toggle="tooltip" data-placement="top" title="Copy To Clipboard" type="url" id="manager_info_share" class="form-control" value="" readonly="">
+                                </div>
+                                <div class="form-group manager_info_embed" style="display:none">
+                                    <label for="embed"><span class="glyphicon glyphicon-console"></span> {{embed}}:</label>
+                                    <textarea onclick="copyToClipboard(this);this.focus();this.select()" data-toggle='tooltip' data-placement='top' title='{{copy_to_clipboard}}' id='manager_info_embed' class="form-control" rows="5" style="resize:none;" readonly=""></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <button type="button" id="manager_update" data-dismiss="modal" class="btn btn-primary" onclick="manager_update()">{{update}}</button>
+                            <button type="button" id="folder_update" data-dismiss="modal" class="btn btn-primary" style="display: none" onclick="folder_update()">{{update}}</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">{{close}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class='loading' style='display: none;'></div>
+        <div class='alert alert-success msg-success' role='alert' style='display: none;'><strong>{{success}}! </strong><span></span></div>
+        <div class='alert alert-danger msg-danger' role='alert' style='display: none;'><strong>{{error}}! </strong><span></span></div>
+        <script>
+            $(document).ready(function() {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+        <div class="clearfix"></div>
+        <hr/>
+        <?php include('footer.php'); ?>
+    </div>
+    <script src="<?=$site_config['homepage']?>/js/all.js?v=<?=filemtime('js/all.js')?>"></script>
+</body>
+</html>

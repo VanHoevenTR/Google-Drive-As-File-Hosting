@@ -1,0 +1,125 @@
+<!-- http://onecloud.media/group/jav/outgroup -->
+<?php 
+/*
+type=join_group
+{"status":1,"msg":"Bạn đã xin gia nhập vào Group này. Vui lòng quay lại sau khi được Xác nhận"}
+
+
+
+*/
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title> Out Group
+    </title>
+    <link href="http://server7.upload69.net/images/2016/11/14/logox1cfab8.png" rel='icon' type='image/x-icon' />
+    <meta name="google-signin-scope" content="profile email" />
+    <meta name="google-signin-client_id" content="382819668368-896gfp09mf70n97cvanqqq651tp4lf8k.apps.googleusercontent.com" />
+    <script src="./js/platform.js?v=1.4.2" async defer></script>
+    <script src="./js/signin.js?v=1.4.2"></script>
+    <link href="./css/bootstrap.min.css?v=1.4.2" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/manager.css?v=1.4.2" />
+    <link rel="stylesheet" href="./css/font-awesome.min.css?v=1.4.2" />
+    <script src="./js/jquery.min.js?v=1.4.2"></script>
+    <script src="./js/bootstrap.min.js?v=1.4.2"></script>
+    <script src="./js/lazy.js?v=1.4.2"></script>
+    <meta name="csrf-token" content="rHFxAGwIgBjF9sWgvJftJL2nwLXo6SvZM7umZfPb">
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+                <a class="navbar-brand" href="/group/jav">
+                    <span class="fa fa-users fa-x2"></span> JAVFREE
+                </a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/dashboard"><span class="fa fa-tachometer fa-2"></span> Dashboard</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/"><span class="fa fa-cloud-upload"></span> Upload</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><span class="fa fa-user"></span> V&otilde; Văn Khoa <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="g-signin2" style="display:none"></li>
+                        <li><a href="/dashboard/profile"><span class="glyphicon glyphicon-credit-card"></span> Hồ sơ cá nhân</a></li>
+                        <li><a href="/group/jav/outgroup"><span class="fa fa-users"></span> Rời khỏi Group</a></li>
+                        <li><a href="/logout" onclick="signOut();" title="Đăng xuất"><span class="glyphicon glyphicon-log-in"></span> Đăng xuất</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="outgroup">
+            <div class="panel panel-warning" style="width:50%;margin:auto;margin-top:20px">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-users"></i> Rời khỏi Group</h3>
+                </div>
+                <div class="panel-body">
+                    Bạn có chắc chắn muốn rời khỏi Group này?
+                </div>
+                <div class="panel-footer" style="text-align:right">
+                    <button class="btn btn-danger" style="float:right" onclick="javascript:location.href='/dashboard'">
+<span class="glyphicon glyphicon-remove"></span> Hủy
+</button>
+                    <form method="post" class="form-horizontal">
+                        <input type="hidden" name="_token" value="rHFxAGwIgBjF9sWgvJftJL2nwLXo6SvZM7umZfPb">
+                        <input type="hidden" name="outgroup" value="out">
+                        <button class="btn btn-success">
+<span class="glyphicon glyphicon-ok"></span> Chắc chắn
+</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class='loading' style='display: none;'></div>
+        <div class='alert alert-success msg-success' role='alert' style='display: none;'><strong>Success! </strong><span></span></div>
+        <div class='alert alert-danger msg-danger' role='alert' style='display: none;'><strong>Error! </strong><span></span></div>
+        <script>
+            $(document).ready(function() {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+        <div class="clearfix"></div>
+        <hr/>
+        <footer>
+            <p>&copy; 2016 Onecloud.media. </p>
+        </footer>
+    </div>
+
+    <div class="modal fade" id="myPreview" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body preview">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="loading-login" class="modal fade in" style="display: none; padding-right: 17px;">
+        <div class="modal-dialog modal-lg" style="width: 360px;">
+            <div class="modal-content">
+                <div class="modal-body" style='text-align:center'>
+                    <p>Đang xử lý, vui lòng chờ...</p>
+                    <img src="../../imgs/gears.gif" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/group.guest.js?v=1.4.2"></script>
+</body>
+
+</html>

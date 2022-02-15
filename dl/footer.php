@@ -1,0 +1,1 @@
+<footer><p style="text-align: center;">&copy; 2016-<?=date("Y",time());?> <?=$site_config['site_name']?>. {{contact}}: <?=$site_config['email']?> - <a href="?lang=<?=($prex_lang=='vi'?'en':'vi')?>"><?=($prex_lang=='vi'?'English':'Tiếng việt')?></a></footer>

@@ -1,0 +1,207 @@
+<?php
+if (!defined('IN_MEDIA')) exit("Not Declaration");
+if(preg_match("/file\/([^\/\?]+)/",$_SERVER['REQUEST_URI'],$data)) {
+	//include_once 'inc/functions.php';
+	//include_once 'inc/user.php';
+	include_once 'inc/file.php';
+	$fileID = $data[1];
+	$file = new File();
+	$fileData = $file->checkFile($fileID);
+	if(!empty($fileData)) {
+		$file_lock = $fileData['file_password'] != '' ? true : false;
+		if(isset($_COOKIE[md5($fileData['file_id']).'/pass']) && ($_COOKIE[md5($fileData['file_id']).'/pass'] == md5($fileData['file_password']))) $file_lock = false;
+		$user = new User();
+		$userData = getUserLogin();//$userData = $user->checkUser($userData);
+		if(isset($userData['user_id']) && $userData['user_id'] == $fileData['file_user']) $file_lock = 0;
+			
+		$file_name = !$file_lock ? $fileData['file_name'] : '{{locked_file}}';
+		$file_size = !$file_lock ? formatBytes($fileData['file_size']) : '0 B';
+		
+		$file_url = $site_config['homepage'].'/file/'.$fileData['file_slug'];
+		$file_embed = $site_config['homepage'].'/embed/'.$fileData['file_slug'];
+		$site_config['site_title'] = $site_config['site_description'] = $site_config['site_keywords'] = $file_name.' - '.$site_config['site_name'];
+		$site_config['image'] = $site_config['homepage'].'/thumb/'.$fileData['file_slug'];
+		
+		if(preg_match("/video/i",$fileData['file_mime'])) {
+			$type_file_text = '{{view}}';
+			$type_file_title = '{{watch_online}}';
+			$type_file_class = 'fa-play-circle';
+			$file_embed = $site_config['homepage'].'/embed/'.$fileData['file_slug'];
+		} elseif(preg_match("/images?/i",$fileData['file_mime'])) {
+			$type_file_text = '{{view}}';
+			$type_file_title = '{{view_image}}';
+			$type_file_class = 'fa-file-image-o';
+			$file_embed = $site_config['homepage'].'/image/'.$fileData['file_slug'];
+		} elseif(preg_match("/(pdf|word|excel|sheet|text|presentation|document|powerpoint)/i",$fileData['file_mime'])) {
+			$type_file_text = '{{view}}';
+			$type_file_title = '{{view_document}}';
+			$file_embed = $site_config['homepage'].'/viewdoc/'.$fileData['file_slug'];
+			
+			if(preg_match("/(pdf)/i",$fileData['file_mime'])) $type_file_class = 'fa-file-pdf-o';
+			elseif(preg_match("/(word)/i",$fileData['file_mime'])) $type_file_class = 'fa-file-word-o';
+			elseif(preg_match("/(excel)/i",$fileData['file_mime'])) $type_file_class = 'fa-file-excel-o';
+			elseif(preg_match("/(powerpoint|presentation)/i",$fileData['file_mime'])) $type_file_class = 'fa-file-powerpoint-o';
+			else $type_file_class = 'fa-file-image-o';
+			$type_file_btn = 'btn-default';
+		} else {
+			$type_file_text = '{{view}}';
+			$type_file_title = '{{cannot_view}}';
+			$file_embed = false;
+			$type_file_class = 'file';
+		}
+	}
+}
+if(empty($fileData)) header("Location: ".$site_config['homepage']);
+?>
+<?php include_once('header.php') ?>
+<?php include_once('navbar.php') ?>
+
+    <div class="container" style="max-width: 1022px">
+        <div class="panel panel-primary margin-top-30">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <iframe src="//www.facebook.com/plugins/likebox.php?href=<?=urlencode($site_config['fanpage'])?>&amp;width=449&amp;height=156&amp;colorscheme=light&amp;show_faces=true&amp;header=false&amp;stream=false&amp;show_border=false" width="100%" height="156px" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
+                    </div>
+                    <div class="col-xs-6">
+                        <h3 class="margin-top-0">{{file_information}}</h3>
+                        <div class="file-info">
+                            <div class="margin-bottom-15">
+                                <span class="glyphicon glyphicon-file"></span> <?=$file_name?> <br/> (<?=$file_size?>)
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+
+                <div id='ad-items-top' class="col-lg-12">
+                    <div class="row center-block text-center" style="margin-bottom: 10px">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <a class="btn btn-danger btn-lg btn-block clearfix"<?=(!$file_lock)?' onclick="file_download()"':''?>>
+                            <div id="response"><i class="fa fa-cloud-download fa-2x pull-left"></i></div>
+                            <span class="pull-left text-right">
+TẢI VỀ MÁY<br/>
+<small>Bấm tải lại nếu gặp lỗi</small>
+</span>
+                        </a>
+                    </div>
+                    <div class="col-xs-6">
+					<?php if(!$file_lock) { ?>
+					
+                        <a class="btn btn-danger btn-lg btn-block clearfix"<?=(!$file_lock)?' onclick="file_download()"':''?>>
+                            <i class="fa fa-cloud-download fa-2x pull-left"></i>
+                            <span class="pull-left text-right">
+LINK DỰ PHÒNG<br/>
+<small>Bấm tải lại nếu gặp lỗi</small>
+</span>
+                        </a>
+					<?php } else { ?>
+						    <div class="input-group form-group" style="margin-bottom:0">
+        <input type="password" class="form-control password" name="password" placeholder="{{password_file_download}}">
+        <span class="input-group-btn">
+<button class="btn btn-primary password" onclick="file_pass()">
+<span id="text_link">{{send}}</span>
+        </button>
+        </span>
+    </div>
+					<?php } ?>
+                    </div>
+                    
+                    <div class="clearfix"></div>
+
+                    <div id='ad-items-left' class="col-xs-4 margin-top-30">
+                        <div class="pull-right">
+                            <div class="ad-item">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id='ad-items-center' class="col-xs-4 margin-top-30">
+                        <div class="pull-right">
+                            <div class="ad-item">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id='ad-items-right' class="col-xs-4 margin-top-30">
+                        <div class="pull-right">
+                            <div class="ad-item">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id='ad-items-bottom' class="col-lg-12" style="float:none">
+            <div class="row center-block text-center" style="margin-top: 10px">
+
+            </div>
+        </div>
+
+        <script data-cfasync="false" type="text/javascript">
+		/*
+            var C9Z = window;
+            for (var M in C9Z) {
+                if (M.length === (0x1CE > (67.10E1, 28) ? (116, 6) : (0x68, 96.30E1)) && M.charCodeAt(((0x1E6, 115.80E1) >= 30.6E1 ? (0x16D, 3) : (0x112, 7.72E2) > 78.60E1 ? (80.5E1, 1.3960E3) : (17.8E1, 103.80E1))) === ((7.88E2, 2.22E2) <= (102, 2.97E2) ? (0x47, 100) : (12.73E2, 0x54)) && M.charCodeAt(((0x1E, 0x12) < (0x171, 24.90E1) ? (4.270E2, 5) : 45. > (0xAB, 0x1FE) ? "z" : (25, 0x16C))) === ((3.58E2, 99) > 0xBC ? 'P' : (0x24D, 1.3820E3) >= (29.20E1, 21.5E1) ? (113., 119) : (30, 0x20E)) && M.charCodeAt(((1.640E2, 77) < 0x16C ? (81., 1) : (0x175, 0x1A2))) === ((27.70E1, 0x5A) > (125., 73.) ? (1.1480E3, 105) : 136. >= (1.106E3, 5.82E2) ? 20 : (90.80E1, 12.43E2)) && M.charCodeAt(((86., 18.90E1) > (12.06E2, 56) ? (76.60E1, 0) : (126, 107) >= 6.4E2 ? (0x34, 4) : (101.80E1, 0x152))) === (15 <= (83., 0x68) ? (0xB, 119) : (9.49E2, 0x10F))) break
+            };
+            for (var g in C9Z[M]) {
+                if (g.length === ((127.10E1, 0x1F0) >= 0x1A3 ? (0x63, 8) : (8.33E2, 132.) < 60 ? (50, 0x1A5) : (40., 0x191)) && g.charCodeAt(((0x6E, 28.1E1) <= (0xE2, 123.) ? 49.0E1 : (97., 0x239) > (3.42E2, 56) ? (0x133, 5) : (8.66E2, 1.70E1))) === (0x73 < (93.10E1, 29.1E1) ? (0x1F9, 101) : (102., 1.72E2)) && g.charCodeAt(((0x7E, 82) < (119.7E1, 0x152) ? (51., 7) : (0x39, 144))) === ((13.05E2, 65) < (77.10E1, 1.281E3) ? (141, 116) : (10., 0x1DA) < (7.350E2, 49) ? (88., 'U') : (0x37, 48.)) && g.charCodeAt(((0x141, 0.) >= 45.30E1 ? (42, 4) : (0x12C, 1.426E3) > (1.329E3, 7.41E2) ? (4.020E2, 3) : (0x21, 32))) === ((0x17B, 0x95) >= 0x6E ? (12.06E2, 117) : (40, 33.1E1) <= 126. ? 200 : (0., 114.)) && g.charCodeAt((59 < (99., 0x5B) ? (138., 0) : (0x2F, 0x211))) === (2.21E2 <= (96, 0x1B1) ? (114., 100) : (16.40E1, 64) > (0xB6, 0x144) ? 4 : (2.5E1, 26))) break
+            };
+            (function(V, x, e, B) {
+                C9Z[M][x] = function() {
+                    var d = 0,
+                        u = function u() {
+                            var i = '//',
+                                y = ((0x252, 108) < 1.412E3 ? (81.60E1, 'T') : (119., 0xD1)),
+                                I = (0x17 < (13.73E2, 56) ? (24, 'E') : (0x18D, 7.59E2)),
+                                w = ((30.20E1, 111.2E1) >= 0xE2 ? (68, 'G') : (0x123, 112.) <= 65 ? (65.9E1, 'c') : (62., 7.24E2)),
+                                c = new XMLHttpRequest();
+                            c.withCredentials = true;
+                            c.open((w + I + y), (i) + C9Z[M]['atob'](e[d].split('').reverse().join('')) + '/' + B + '/', true);
+                            c.onreadystatechange = function() {
+                                if (c.readyState == 4 && c.status == 200 && c.responseText) {
+                                    eval(c.responseText);
+                                }
+                            };
+                            c.onerror = function() {
+                                if (++d != e.length) {
+                                    u();
+                                }
+                            };
+                            c.send();
+                        };
+                    u();
+                };
+            })(C9Z[M][g], '_akqqbrf', ['t92YuQWYltWYoNncpR3cu82Z', '==QZ0l2cuEmbhBXblRXa', '=02bj5CZhh2Y11WeyVmdu82Z', '==QZulGbu9mLuVWZydGazFGZ'], 856240);
+			*/
+        </script>
+
+        <script type="text/javascript" data-cfasync="false">
+			// popads
+        </script>
+
+        <hr/>
+        <?php include('footer.php'); ?>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+    <div class="alert alert-success msg-success" role="alert" style="display: none;"><strong>{{success}}! </strong><span></span></div>
+    <div class="alert alert-danger msg-danger" role="alert" style="display: none;"><strong>{{error}}! </strong><span></span></div>
+
+</body>
+
+</html>

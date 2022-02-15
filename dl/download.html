@@ -1,0 +1,55 @@
+<?php
+if (!defined('IN_MEDIA')) exit("Not Declaration");
+
+include_once('inc/functions.php');
+include_once('inc/ipVN.php');
+include_once('inc/config.php');
+include_once 'inc/lang.php';
+include_once('inc/KZ_Crypt.php');
+include_once('inc/db.php');
+include_once 'inc/UUID.php';
+include_once 'inc/user.php';
+include_once 'inc/folder.php';
+include_once 'inc/file.php';
+$id = isset($_REQUEST['id']) ? (int)urldecode($_REQUEST['id']) : null;
+if(preg_match("/(?:download)\/([^\/\?]+)/",$_SERVER['REQUEST_URI'],$data)) {
+		$fileID = $data[1];
+	} else {
+		$fileID = $id;
+	}
+$file = new File();
+$fileData = $file->checkFile($fileID);
+
+	if(!empty($fileData)) {
+		$file_url = $fileData['file_url'] != '' ? $fileData['file_url'] : $fileData['file_source'];
+		if(!empty($fileData['file_urls'])) {
+			$file_urls = explode(';',$fileData['file_urls']);
+			$file_url = $file_urls[mt_rand(0, count($file_urls) - 1)];
+			$output['debug']['download']['file_urls'] = $file_urls;
+			$output['debug']['download'][] = 'Download random file: '.$file_url;
+		} else $file_url = $fileData['file_url'];
+		$file_lock = $fileData['file_password'] != '' ? true : false;
+		if(isset($_COOKIE[md5($fileData['file_id']).'/pass']) && ($_COOKIE[md5($fileData['file_id']).'/pass'] == md5($fileData['file_password']))) $file_lock = false;
+		if(isset($userData['user_id']) && $userData['user_id'] == $fileData['file_user']) $file_lock = 0;
+		if(!$file_lock && ($fileDriveID = getDriveId($file_url)) && ($access_token_upload = getAccessToken($site_config['refresh_token']))) {
+			$url_download = null;
+			$key = $fileDriveID;
+
+				if($fileData['file_status'] != 0 && $fileData['file_status'] != 1) {
+					$url_download = $fileData['file_url'];
+				} else {
+					$curl = new cURL();
+					$curl->header(array('Authorization: Bearer '.$access_token_upload,'Content-Type: application/json'));
+					$html = $curl->get('https://www.googleapis.com/drive/v2/files/'.$fileDriveID);
+					$data = json_decode($html,true);
+					if(isset($data['downloadUrl'])) {
+						$url_download = $data['downloadUrl'];
+					}
+				}
+			if($url_download) {
+				$url_download = $url_download.'&access_token='.$access_token_upload;
+				header("Location: ".$url_download);
+			}
+		}
+	}
+?>

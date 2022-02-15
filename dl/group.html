@@ -1,0 +1,412 @@
+<!-- onecloud.media/group/jav -->
+<?php 
+/*
+type=join_group
+{"status":1,"msg":"Bạn đã xin gia nhập vào Group này. Vui lòng quay lại sau khi được Xác nhận"}
+
+
+
+*/
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title> JAVFREE
+    </title>
+    <link href="http://server7.upload69.net/images/2016/11/14/logox1cfab8.png" rel='icon' type='image/x-icon' />
+    <meta name="google-signin-scope" content="profile email" />
+    <meta name="google-signin-client_id" content="382819668368-896gfp09mf70n97cvanqqq651tp4lf8k.apps.googleusercontent.com" />
+    <script src="./js/platform.js?v=1.4.2" async defer></script>
+    <script src="./js/signin.js?v=1.4.2"></script>
+    <link href="./css/bootstrap.min.css?v=1.4.2" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/manager.css?v=1.4.2" />
+    <link rel="stylesheet" href="./css/font-awesome.min.css?v=1.4.2" />
+    <script src="./js/jquery.min.js?v=1.4.2"></script>
+    <script src="./js/bootstrap.min.js?v=1.4.2"></script>
+    <script src="./js/lazy.js?v=1.4.2"></script>
+    <style type="text/css">
+        body {
+            background: url(./imgs/bg_cloud.jpg) repeat-x #fff!important;
+        }
+    </style>
+    <meta name="csrf-token" content="rHFxAGwIgBjF9sWgvJftJL2nwLXo6SvZM7umZfPb">
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+                <a class="navbar-brand" href="./group/jav">
+                    <span class="fa fa-users fa-x2"></span> JAVFREE
+                </a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="./"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+            </ul>
+
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li id="join-group"><a href="#" onclick="join_group()"><span class="glyphicon glyphicon-log-in"></span> Gia nhập</a></li>
+					<!-- <li id="join-group"><a href="#"><span class="glyphicon glyphicon-time"></span> Chờ duyệt</a></li> -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="manager">
+            <br>
+            <div class="row">
+                <div class="col-sm-4" style="float:right">
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                        <input data-toggle='tooltip' data-placement='top' title='Tối thiểu 3 ký tự' type="text" class="form-control" style="height:38px;z-index:0" id="manager_keyword" placeholder="Nhập từ khóa cần tìm..." />
+                        <span class="input-group-btn">
+<button class="btn btn-primary" style="height:38px;z-index:0" onclick="manager_search()">
+<span id="text_link">Tìm kiếm</span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-13 middle text-center">Thumb</th>
+                                    <th class="col-md-4"><span id="manager-sort">Name <i class="fa fa-sort"></i></span></th>
+                                    <th class="col-md-1 text-center">Owner</th>
+                                    <th class="col-md-1 text-center">Size</th>
+                                    <th class="col-md-1 text-center">Date</th>
+                                    <th class="col-md-13 text-center">Status</th>
+                                    <th class="col-md-13 text-center"><span class="glyphicon glyphicon-save"></span></th>
+                                    <th class="col-md-13 text-center"><span class="glyphicon glyphicon-eye-open"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody class="manager_response">
+                                <tr></tr>
+                                <tr id='manager-702609'>
+                                    <td class="col-md-13 middle text-center">
+                                        <img class="thumb lazy" data-toggle='modal' data-target='#myPreview' src="./imgs/ajax-loader.gif" data-src="//onecloud.media/thumb/a33f6b448801285b-045ea766f9cd6fda?s=480" width="50">
+                                    </td>
+                                    <td class='col-md-4 middle'><a href='#' data-toggle='modal' data-target='#myModal' onclick='manager_info(702609)'>PGD-912.mp4</a></td>
+                                    <td class='col-md-1 middle text-center'>Quangnw ryan</td>
+                                    <td class='col-md-1 middle text-center'>1,17 GB</td>
+                                    <td class='col-md-1 middle text-center'>2017-01-06 19:05:36</td>
+                                    <td class='col-md-13 text-center middle manager-status-702609'>
+                                        <span data-toggle='tooltip' data-placement='top' title='Công khai' class='glyphicon glyphicon-ok-circle' style='color:green'></span>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/file/a33f6b448801285b-045ea766f9cd6fda" data-toggle="tooltip" data-placement="top" title="Tải về" target='_blank' class='btn btn-warning btn-xs'>
+                                            <span class='glyphicon glyphicon-save'></span>
+                                        </a>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/embed/a33f6b448801285b-045ea766f9cd6fda" data-toggle="tooltip" data-placement="top" title="Xem Online" target='_blank' class='btn btn-primary btn-xs'>
+                                            <span class='glyphicon glyphicon-facetime-video'></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr id='manager-702581'>
+                                    <td class="col-md-13 middle text-center">
+                                        <img class="thumb lazy" data-toggle='modal' data-target='#myPreview' src="./imgs/ajax-loader.gif" data-src="//onecloud.media/thumb/b23dc472b0d78e35-13685bd86f421280?s=480" width="50">
+                                    </td>
+                                    <td class='col-md-4 middle'><a href='#' data-toggle='modal' data-target='#myModal' onclick='manager_info(702581)'>PGD-910.mp4</a></td>
+                                    <td class='col-md-1 middle text-center'>Quangnw ryan</td>
+                                    <td class='col-md-1 middle text-center'>1,15 GB</td>
+                                    <td class='col-md-1 middle text-center'>2017-01-06 18:48:47</td>
+                                    <td class='col-md-13 text-center middle manager-status-702581'>
+                                        <span data-toggle='tooltip' data-placement='top' title='Công khai' class='glyphicon glyphicon-ok-circle' style='color:green'></span>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/file/b23dc472b0d78e35-13685bd86f421280" data-toggle="tooltip" data-placement="top" title="Tải về" target='_blank' class='btn btn-warning btn-xs'>
+                                            <span class='glyphicon glyphicon-save'></span>
+                                        </a>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/embed/b23dc472b0d78e35-13685bd86f421280" data-toggle="tooltip" data-placement="top" title="Xem Online" target='_blank' class='btn btn-primary btn-xs'>
+                                            <span class='glyphicon glyphicon-facetime-video'></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr id='manager-702545'>
+                                    <td class="col-md-13 middle text-center">
+                                        <img class="thumb lazy" data-toggle='modal' data-target='#myPreview' src="//onecloud.media/imgs/ajax-loader.gif" data-src="//onecloud.media/thumb/ba5e34935a93e9e4-81e6d268523efa4b?s=480" width="50">
+                                    </td>
+                                    <td class='col-md-4 middle'><a href='#' data-toggle='modal' data-target='#myModal' onclick='manager_info(702545)'>PGD-909.mp4</a></td>
+                                    <td class='col-md-1 middle text-center'>Quangnw ryan</td>
+                                    <td class='col-md-1 middle text-center'>1,15 GB</td>
+                                    <td class='col-md-1 middle text-center'>2017-01-06 18:30:13</td>
+                                    <td class='col-md-13 text-center middle manager-status-702545'>
+                                        <span data-toggle='tooltip' data-placement='top' title='Công khai' class='glyphicon glyphicon-ok-circle' style='color:green'></span>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/file/ba5e34935a93e9e4-81e6d268523efa4b" data-toggle="tooltip" data-placement="top" title="Tải về" target='_blank' class='btn btn-warning btn-xs'>
+                                            <span class='glyphicon glyphicon-save'></span>
+                                        </a>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/embed/ba5e34935a93e9e4-81e6d268523efa4b" data-toggle="tooltip" data-placement="top" title="Xem Online" target='_blank' class='btn btn-primary btn-xs'>
+                                            <span class='glyphicon glyphicon-facetime-video'></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr id='manager-702526'>
+                                    <td class="col-md-13 middle text-center">
+                                        <img class="thumb lazy" data-toggle='modal' data-target='#myPreview' src="//onecloud.media/imgs/ajax-loader.gif" data-src="//onecloud.media/thumb/ad963b0a6a63ece1-f65d7ce418bf16e1?s=480" width="50">
+                                    </td>
+                                    <td class='col-md-4 middle'><a href='#' data-toggle='modal' data-target='#myModal' onclick='manager_info(702526)'>ADN-109.mp4</a></td>
+                                    <td class='col-md-1 middle text-center'>Quangnw ryan</td>
+                                    <td class='col-md-1 middle text-center'>673,56 MB</td>
+                                    <td class='col-md-1 middle text-center'>2017-01-06 18:17:58</td>
+                                    <td class='col-md-13 text-center middle manager-status-702526'>
+                                        <span data-toggle='tooltip' data-placement='top' title='Công khai' class='glyphicon glyphicon-ok-circle' style='color:green'></span>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/file/ad963b0a6a63ece1-f65d7ce418bf16e1" data-toggle="tooltip" data-placement="top" title="Tải về" target='_blank' class='btn btn-warning btn-xs'>
+                                            <span class='glyphicon glyphicon-save'></span>
+                                        </a>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/embed/ad963b0a6a63ece1-f65d7ce418bf16e1" data-toggle="tooltip" data-placement="top" title="Xem Online" target='_blank' class='btn btn-primary btn-xs'>
+                                            <span class='glyphicon glyphicon-facetime-video'></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr id='manager-702515'>
+                                    <td class="col-md-13 middle text-center">
+                                        <img class="thumb lazy" data-toggle='modal' data-target='#myPreview' src="//onecloud.media/imgs/ajax-loader.gif" data-src="//onecloud.media/thumb/2a611cb4596ba01a-fe56ac39addc0e41?s=480" width="50">
+                                    </td>
+                                    <td class='col-md-4 middle'><a href='#' data-toggle='modal' data-target='#myModal' onclick='manager_info(702515)'>PGD-908.mp4</a></td>
+                                    <td class='col-md-1 middle text-center'>Quangnw ryan</td>
+                                    <td class='col-md-1 middle text-center'>1,15 GB</td>
+                                    <td class='col-md-1 middle text-center'>2017-01-06 18:10:22</td>
+                                    <td class='col-md-13 text-center middle manager-status-702515'>
+                                        <span data-toggle='tooltip' data-placement='top' title='Công khai' class='glyphicon glyphicon-ok-circle' style='color:green'></span>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/file/2a611cb4596ba01a-fe56ac39addc0e41" data-toggle="tooltip" data-placement="top" title="Tải về" target='_blank' class='btn btn-warning btn-xs'>
+                                            <span class='glyphicon glyphicon-save'></span>
+                                        </a>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/embed/2a611cb4596ba01a-fe56ac39addc0e41" data-toggle="tooltip" data-placement="top" title="Xem Online" target='_blank' class='btn btn-primary btn-xs'>
+                                            <span class='glyphicon glyphicon-facetime-video'></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr id='manager-702449'>
+                                    <td class="col-md-13 middle text-center">
+                                        <img class="thumb lazy" data-toggle='modal' data-target='#myPreview' src="//onecloud.media/imgs/ajax-loader.gif" data-src="//onecloud.media/thumb/7c289ae64c848e37-2284309d4f0ab36e?s=480" width="50">
+                                    </td>
+                                    <td class='col-md-4 middle'><a href='#' data-toggle='modal' data-target='#myModal' onclick='manager_info(702449)'>1Pondo-20150910-150-HD.mp4</a></td>
+                                    <td class='col-md-1 middle text-center'>Quangnw ryan</td>
+                                    <td class='col-md-1 middle text-center'>590,49 MB</td>
+                                    <td class='col-md-1 middle text-center'>2017-01-06 17:31:01</td>
+                                    <td class='col-md-13 text-center middle manager-status-702449'>
+                                        <span data-toggle='tooltip' data-placement='top' title='Công khai' class='glyphicon glyphicon-ok-circle' style='color:green'></span>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/file/7c289ae64c848e37-2284309d4f0ab36e" data-toggle="tooltip" data-placement="top" title="Tải về" target='_blank' class='btn btn-warning btn-xs'>
+                                            <span class='glyphicon glyphicon-save'></span>
+                                        </a>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/embed/7c289ae64c848e37-2284309d4f0ab36e" data-toggle="tooltip" data-placement="top" title="Xem Online" target='_blank' class='btn btn-primary btn-xs'>
+                                            <span class='glyphicon glyphicon-facetime-video'></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr id='manager-702437'>
+                                    <td class="col-md-13 middle text-center">
+                                        <img class="thumb lazy" data-toggle='modal' data-target='#myPreview' src="//onecloud.media/imgs/ajax-loader.gif" data-src="//onecloud.media/thumb/796bca2268603984-780488208d6e880b?s=480" width="50">
+                                    </td>
+                                    <td class='col-md-4 middle'><a href='#' data-toggle='modal' data-target='#myModal' onclick='manager_info(702437)'>1Pondo-20150902-146-HD.mp4</a></td>
+                                    <td class='col-md-1 middle text-center'>Quangnw ryan</td>
+                                    <td class='col-md-1 middle text-center'>639,12 MB</td>
+                                    <td class='col-md-1 middle text-center'>2017-01-06 17:25:31</td>
+                                    <td class='col-md-13 text-center middle manager-status-702437'>
+                                        <span data-toggle='tooltip' data-placement='top' title='Công khai' class='glyphicon glyphicon-ok-circle' style='color:green'></span>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/file/796bca2268603984-780488208d6e880b" data-toggle="tooltip" data-placement="top" title="Tải về" target='_blank' class='btn btn-warning btn-xs'>
+                                            <span class='glyphicon glyphicon-save'></span>
+                                        </a>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/embed/796bca2268603984-780488208d6e880b" data-toggle="tooltip" data-placement="top" title="Xem Online" target='_blank' class='btn btn-primary btn-xs'>
+                                            <span class='glyphicon glyphicon-facetime-video'></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr id='manager-702429'>
+                                    <td class="col-md-13 middle text-center">
+                                        <img class="thumb lazy" data-toggle='modal' data-target='#myPreview' src="//onecloud.media/imgs/ajax-loader.gif" data-src="//onecloud.media/thumb/e5d398a8f15119d4-d4868091497fa4ea?s=480" width="50">
+                                    </td>
+                                    <td class='col-md-4 middle'><a href='#' data-toggle='modal' data-target='#myModal' onclick='manager_info(702429)'>1Pondo-20150917-154-HD.mp4</a></td>
+                                    <td class='col-md-1 middle text-center'>Quangnw ryan</td>
+                                    <td class='col-md-1 middle text-center'>586,76 MB</td>
+                                    <td class='col-md-1 middle text-center'>2017-01-06 17:18:57</td>
+                                    <td class='col-md-13 text-center middle manager-status-702429'>
+                                        <span data-toggle='tooltip' data-placement='top' title='Công khai' class='glyphicon glyphicon-ok-circle' style='color:green'></span>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/file/e5d398a8f15119d4-d4868091497fa4ea" data-toggle="tooltip" data-placement="top" title="Tải về" target='_blank' class='btn btn-warning btn-xs'>
+                                            <span class='glyphicon glyphicon-save'></span>
+                                        </a>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/embed/e5d398a8f15119d4-d4868091497fa4ea" data-toggle="tooltip" data-placement="top" title="Xem Online" target='_blank' class='btn btn-primary btn-xs'>
+                                            <span class='glyphicon glyphicon-facetime-video'></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr id='manager-702424'>
+                                    <td class="col-md-13 middle text-center">
+                                        <img class="thumb lazy" data-toggle='modal' data-target='#myPreview' src="//onecloud.media/imgs/ajax-loader.gif" data-src="//onecloud.media/thumb/6dae4a0d23008cd2-d17a6a2653667547?s=480" width="50">
+                                    </td>
+                                    <td class='col-md-4 middle'><a href='#' data-toggle='modal' data-target='#myModal' onclick='manager_info(702424)'>1Pondo-20150908-149-HD.mp4</a></td>
+                                    <td class='col-md-1 middle text-center'>Quangnw ryan</td>
+                                    <td class='col-md-1 middle text-center'>506,33 MB</td>
+                                    <td class='col-md-1 middle text-center'>2017-01-06 17:11:14</td>
+                                    <td class='col-md-13 text-center middle manager-status-702424'>
+                                        <span data-toggle='tooltip' data-placement='top' title='Công khai' class='glyphicon glyphicon-ok-circle' style='color:green'></span>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/file/6dae4a0d23008cd2-d17a6a2653667547" data-toggle="tooltip" data-placement="top" title="Tải về" target='_blank' class='btn btn-warning btn-xs'>
+                                            <span class='glyphicon glyphicon-save'></span>
+                                        </a>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/embed/6dae4a0d23008cd2-d17a6a2653667547" data-toggle="tooltip" data-placement="top" title="Xem Online" target='_blank' class='btn btn-primary btn-xs'>
+                                            <span class='glyphicon glyphicon-facetime-video'></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr id='manager-702232'>
+                                    <td class="col-md-13 middle text-center">
+                                        <img class="thumb lazy" data-toggle='modal' data-target='#myPreview' src="//onecloud.media/imgs/ajax-loader.gif" data-src="//onecloud.media/thumb/b44b28defd20fe57-cb755b6521206cbd?s=480" width="50">
+                                    </td>
+                                    <td class='col-md-4 middle'><a href='#' data-toggle='modal' data-target='#myModal' onclick='manager_info(702232)'>em Linh.MP4.mp4</a></td>
+                                    <td class='col-md-1 middle text-center'>Quangnw ryan</td>
+                                    <td class='col-md-1 middle text-center'>367,8 MB</td>
+                                    <td class='col-md-1 middle text-center'>2017-01-06 15:44:10</td>
+                                    <td class='col-md-13 text-center middle manager-status-702232'>
+                                        <span data-toggle='tooltip' data-placement='top' title='Công khai' class='glyphicon glyphicon-ok-circle' style='color:green'></span>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/file/b44b28defd20fe57-cb755b6521206cbd" data-toggle="tooltip" data-placement="top" title="Tải về" target='_blank' class='btn btn-warning btn-xs'>
+                                            <span class='glyphicon glyphicon-save'></span>
+                                        </a>
+                                    </td>
+                                    <td class='col-md-13 text-center middle'>
+                                        <a href="//onecloud.media/embed/b44b28defd20fe57-cb755b6521206cbd" data-toggle="tooltip" data-placement="top" title="Xem Online" target='_blank' class='btn btn-primary btn-xs'>
+                                            <span class='glyphicon glyphicon-facetime-video'></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-footer manager">
+                    <div id='manager_search_load' style="display:none">Tải thêm 10 dữ liệu</div>
+                    <div id='manager_sort_load' style="display:none">Tải thêm 10 dữ liệu</div>
+                    <nav style="text-align: right;">
+                        <ul class="pagination">
+                            <li class="disabled"><span>&laquo;</span></li>
+                            <li class="active"><span>1</span></li>
+                            <li><a href="http://onecloud.media/group/jav?page=2">2</a></li>
+                            <li><a href="http://onecloud.media/group/jav?page=3">3</a></li>
+                            <li><a href="http://onecloud.media/group/jav?page=4">4</a></li>
+                            <li><a href="http://onecloud.media/group/jav?page=5">5</a></li>
+                            <li><a href="http://onecloud.media/group/jav?page=6">6</a></li>
+                            <li><a href="http://onecloud.media/group/jav?page=7">7</a></li>
+                            <li><a href="http://onecloud.media/group/jav?page=8">8</a></li>
+                            <li class="disabled"><span>...</span></li>
+                            <li><a href="http://onecloud.media/group/jav?page=2580">2580</a></li>
+                            <li><a href="http://onecloud.media/group/jav?page=2581">2581</a></li>
+                            <li><a href="http://onecloud.media/group/jav?page=2" rel="next">&raquo;</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog" style="width: 100%;max-width: 960px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><span class="glyphicon glyphicon-file"></span> <span id="manager_info_title"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="linkShare"><span class="glyphicon glyphicon-link"></span> Link share:</label>
+                                    <input onclick="copyToClipboard(this)" data-toggle='tooltip' data-placement='top' title='Copy To Clipboard' type="url" id='manager_info_share' class="form-control" value="" readonly="">
+                                </div>
+                                <div class="form-group manager_info_embed" style="display:none">
+                                    <label for="embed"><span class="glyphicon glyphicon-console"></span> Embed:</label>
+                                    <textarea onclick="copyToClipboard(this)" data-toggle='tooltip' data-placement='top' title='Copy To Clipboard' id='manager_info_embed' class="form-control" rows="3" style="resize:none;" readonly=""></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <footer>
+            <p>&copy; 2016 Onecloud.media. </p>
+        </footer>
+
+        <div class='loading' style='display: none;'></div>
+        <div class='alert alert-success msg-success' role='alert' style='display: none;'><strong>Success! </strong><span></span></div>
+        <div class='alert alert-danger msg-danger' role='alert' style='display: none;'><strong>Error! </strong><span></span></div>
+        <script>
+            $(document).ready(function() {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+    </div>
+
+    <div class="modal fade" id="myPreview" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body preview">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="loading-login" class="modal fade in" style="display: none; padding-right: 17px;">
+        <div class="modal-dialog modal-lg" style="width: 360px;">
+            <div class="modal-content">
+                <div class="modal-body" style='text-align:center'>
+                    <p>Đang xử lý, vui lòng chờ...</p>
+                    <img src="./imgs/gears.gif" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/group.guest.js?v=1.4.2"></script>
+</body>
+
+</html>

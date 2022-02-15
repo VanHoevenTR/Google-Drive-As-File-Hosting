@@ -1,0 +1,20 @@
+User-agent: *
+Allow: / 
+ 
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: YandexBot
+Disallow: /
+
+User-Agent: Wada.vn Vietnamese Search
+Disallow: /
+
+User-Agent: coccoc
+Crawl-delay: 1
+
+User-Agent: itim
+Disallow: /
+
+User-agent: bingbot
+Crawl-delay: 1

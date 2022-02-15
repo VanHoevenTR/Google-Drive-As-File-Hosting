@@ -1,0 +1,125 @@
+<?php 
+if (!defined('IN_MEDIA')) exit("Not Declaration");
+include_once 'inc/user.php';
+$user = new User();
+$userData = getUserLogin(true);
+//$userData = $user->checkUser($userData);
+
+if(empty($userData)) header("Location: ".$site_config['homepage']);
+
+$user_email 		= $userData['user_email'];
+$user_nickname 		= $userData['user_nickname'] != '' ? $userData['user_nickname'] : $userData['user_first_name'].' '.$userData['user_last_name'];
+$user_avatar 		= $userData['user_picture'];
+$user_player_logo 	= $userData['user_player_logo'];
+$user_gender 		= $userData['user_gender'];
+$user_created 		= $userData['user_created'];
+
+if(!empty($_POST) && !empty($userData)) {
+	//var_dump($_POST);
+	$newUserData = array(
+		'user_id'				=> $userData['user_id'],
+		'user_oauth_provider'	=> $userData['user_oauth_provider'],
+		'user_oauth_uid'		=> $userData['user_oauth_uid'],
+		'user_nickname'    		=> urldecode($_REQUEST['user']),
+		'user_player_logo'     	=> urldecode($_REQUEST['logo']),
+		'user_gender'         	=> @$_REQUEST['gender'] == 'male' ? 'male' : 'female',
+	);
+	//$output['newUserData'] = $newUserData;
+	$userData = $user->updateUser($newUserData);
+	if(!empty($userData)) {
+		$kz_crypt = new KZ_Crypt;
+		$kz_crypt->_text = json_encode($userData);
+		if($kz_crypt->_encrypt() != false) {
+			$data = trim($kz_crypt->_result);
+			$_SESSION['userData'] = $data;
+			setcookie('userData', $data, time()+(3600*24*7),'/');
+		}
+		$type_class = 'alert-success';
+		$type_title = 'Success!';
+		$type_text = 'Cập nhật hồ sơ thành công.';
+	} else {
+		$type_class = 'alert-danger';
+		$type_title = 'Error!';
+		$type_text = 'Cập nhật hồ sơ thất bại.';
+	}
+}
+
+$site_config['title'] = 'Profile: '.$user_nickname;
+?>
+<?php include_once('header.php') ?>
+<?php include_once('navbar.php') ?>
+    <div class="container">
+        <div id="profile">
+            <h1 class="page-header"><span class="glyphicon glyphicon-user"></span> {{info_account}}</h1>
+			<?php
+			if(!empty($_POST) && !empty($userData)) {
+			?>
+				<div class="alert <?=$type_class?>" role="alert">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<strong><?=$type_title?></strong> <?=$type_text?>
+				</div>
+			<?php } ?>
+
+            <form method="post" class="form-horizontal">
+                <input type="hidden" name="_token" value="sQE3BCulry33mF5MSSgNWzwW083ny6NeWQOxoKzd">
+                <div class="form-group">
+                    <label class="control-label text-left col-sm-2">Email:</label>
+                    <div class="col-sm-10">
+                        <input type="email" name="email" class="form-control" value="<?=$user_email?>" readonly='' />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label text-left col-sm-2">{{nickname}}:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="user" value="<?=$user_nickname?>" placeholder="{{name_display}}" />
+                    </div>
+                </div>
+                <div class="form-group" style="display:none">
+                    <label class="control-label text-left col-sm-2">Avatar:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="avatar" value="" placeholder="{{avatar}}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label text-left col-sm-2">Player Logo:</label>
+                    <div class="col-sm-10">
+                        <input type="url" class="form-control" name="logo" value="<?=$user_player_logo?>" placeholder="{{logo_placeholder}}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label text-left col-sm-2">{{gender}}:</label>
+                    <div class="col-sm-10">
+                        <label class="radio-inline"><input type="radio" name="gender" value="male"<?=$user_gender=='male'?' checked':''?>/>{{male}}</label>
+                        <label class="radio-inline"><input type="radio" name="gender" value="female"<?=$user_gender=='female'?' checked':''?>/>{{female}}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label text-left col-sm-2">{{user_created}}:</label>
+                    <div class="col-sm-10">
+                        <h5 name="created"><?=$user_created?></h5>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">{{update}}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class='loading' style='display: none;'></div>
+        <div class='alert alert-success msg-success' role='alert' style='display: none;'><strong>{{success}}! </strong><span></span></div>
+        <div class='alert alert-danger msg-danger' role='alert' style='display: none;'><strong>{{error}}! </strong><span></span></div>
+        <script>
+            $(document).ready(function() {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+        <div class="clearfix"></div>
+        <hr/>
+        <?php include('footer.php'); ?>
+    </div>
+    <script src="<?=$site_config['homepage']?>/js/all.js?v=<?=filemtime('js/all.js')?>"></script>
+</body>
+
+</html>

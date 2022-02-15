@@ -1,0 +1,47 @@
+<?php
+if (!defined('IN_MEDIA')) exit("Not Declaration");
+include_once('header.php');
+//if(!LOCALHOST) header("Location: ".$site_config['homepage'].'/dashboard/remote');
+?>
+<?php include_once('navbar.php') ?>
+    <div class="jumbotron">
+        <div class="container">
+            <div class="alert alert-success" role="alert">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> {{tip_process_video}}<br />
+				{{tip_process_video_statu}}
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div id="item-group">
+                            <div class="dropzone" id="dropzone"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" id="allLink" rows="5" style="display:none"></textarea>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <input type="file" id="myfile" style="display:none" onChange="uploadChange();" multiple=""/>
+                    <label id="myfile" for="myfile">
+<span class="glyphicon glyphicon-cloud-upload"></span> <span>{{choose_file}}</span>
+</label>
+                    <span id="submitUpload" style="display:none" onclick="submitUpload();"><i class="fa fa-cloud-upload"></i> {{upload}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <hr/>
+        <?php include('footer.php'); ?>
+    </div>
+    <script type="text/javascript" src="<?=$site_config['homepage']?>/js/jquery.min.js"></script>
+    <script type="text/javascript" src="<?=$site_config['homepage']?>/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var apiKey = "<?=$site_config['apiKey']?>";
+    </script>
+    <script type="text/javascript" src="<?=$site_config['homepage']?>/js/multiUpload.min.js?v=<?=filemtime('js/multiUpload.min.js')?>"></script>
+    <script type="text/javascript">$(document).ready(function(){$(".dropdown-notifications").click(function(){$(".dropdown-notifications").addClass("open")}),$(document).click(function(){$(".dropdown-notifications").removeClass("open")}),$(".dropdown-notifications").click(function(){return!1})});</script>
+ 
+</body>
+</html>
